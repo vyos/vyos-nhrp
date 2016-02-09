@@ -27,6 +27,7 @@ use POSIX;
 use File::Basename;
 use File::Compare;
 use NetAddr::IP;
+use match::smart;
 
 use lib "/opt/vyatta/share/perl5/";
 use Vyatta::Config;

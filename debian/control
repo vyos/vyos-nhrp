@@ -11,6 +11,7 @@ Depends: vyatta-cfg-system,
  vyatta-cfg,
  vyatta-op,
  vyos-opennhrp,
+ libmatch-simple-perl,
  ${misc:Depends}
 Replaces: vyos-nhrp
 Description: VyOs package vyos-nhrp
