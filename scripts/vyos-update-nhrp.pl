@@ -52,7 +52,7 @@ sub checkref {
 	$config_nhrp_tun->setLevel("protocols nhrp tunnel");
 	my @nhrp_tunnels = $config_nhrp_tun->listNodes();
 
-	if (any(@nhrp_tunnels) eq $tun) {
+	if (grep {$_ eq $tun} @nhrp_tunnels) {
 		print ("WARNING: Can't delete tunnel $tun, it is in use by NHRP config.\n");
 		exit 1;
 	}
@@ -104,7 +104,7 @@ sub configure_nhrp_tunnels {
 
 	if (@nhrp_tunnels) {
 		foreach my $nhrp_tunnel(@nhrp_tunnels) {
-			if (any(@tunnels) eq $nhrp_tunnel) {
+			if (grep {$_ eq $nhrp_tunnel} @tunnels) {
 				if ($config_tun->returnValue("$nhrp_tunnel encapsulation") eq "gre" && ! $config_tun->exists("$nhrp_tunnel remote-ip")) {
 					my @conf_file = tunnel_config($nhrp_tunnel);
 					open (my $fh,">>$conffile");
@@ -160,7 +160,7 @@ sub configure_nhrp_ipsec {
 			my @ipsec_profile_tunnels = $config_ipsec_profile_tun->listNodes();
 
 			foreach my $ipsec_profile_tunnel(@ipsec_profile_tunnels) {
-				if (any(@nhrp_tunnels) eq $ipsec_profile_tunnel) {
+				if (grep {$_ eq $ipsec_profile_tunnel} @nhrp_tunnels) {
 					my @conf_file = ipsec_config($ipsec_profile, $ipsec_profile_tunnel);
 					open (my $fh,">>$ipsecfile");
 					foreach (@conf_file) {
