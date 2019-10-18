@@ -458,6 +458,10 @@ sub create_nhrp_iptables {
 	$config_tun->setLevel("interfaces tunnel");
 	
 	if ( $config_tun->exists("$tun local-ip")) {
+		if ( $config_tun->exists("$tun remote-ip")) {
+			print ("$tun is not 'mGRE' tunnel'\n");
+			exit 1;
+		}
 		my $local_ip = $config_tun->returnValue("$tun local-ip");
 
 		system ("sudo iptables -N VYOS_NHRP_${tun}_OUT_HOOK") == 0 or die "System call failed: $!";
