@@ -32,7 +32,7 @@ DAEMON_ARGS=" -d -a $CTRLPIPE -c $CONFFILE -s $SCRIPTFILE -p $PIDFILE"
 [ -x "$DAEMON" ] || exit 0
 
 # Exclude from systemd
-_SYSTEMCTL_SKIP_REDIRECT=yes
+SYSTEMCTL_SKIP_REDIRECT=yes
 
 # Read configuration variable file if it is present
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
