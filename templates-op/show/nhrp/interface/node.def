@@ -1,3 +1,3 @@
 help: Show NHRP interface connection information
 run: 
-	sudo opennhrpctl interface show || echo OpenNHRP is not running.
+	if [ -f /var/run/opennhrp.pid ]; then sudo opennhrpctl interface show; else echo OpenNHRP is not running.; fi
