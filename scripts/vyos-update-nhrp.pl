@@ -105,7 +105,7 @@ sub configure_nhrp_tunnels {
 	if (@nhrp_tunnels) {
 		foreach my $nhrp_tunnel(@nhrp_tunnels) {
 			if (grep {$_ eq $nhrp_tunnel} @tunnels) {
-				if ($config_tun->returnValue("$nhrp_tunnel encapsulation") eq "gre" && ! $config_tun->exists("$nhrp_tunnel remote-ip")) {
+				if ($config_tun->returnValue("$nhrp_tunnel encapsulation") eq "gre" && ! $config_tun->exists("$nhrp_tunnel remote")) {
 					my @conf_file = tunnel_config($nhrp_tunnel);
 					open (my $fh,">>$conffile");
 					foreach (@conf_file) {
@@ -457,12 +457,12 @@ sub create_nhrp_iptables {
 	
 	$config_tun->setLevel("interfaces tunnel");
 	
-	if ( $config_tun->exists("$tun local-ip")) {
-		if ( $config_tun->exists("$tun remote-ip")) {
+	if ( $config_tun->exists("$tun source-address")) {
+		if ( $config_tun->exists("$tun remote")) {
 			print ("$tun is not 'mGRE' tunnel'\n");
 			exit 1;
 		}
-		my $local_ip = $config_tun->returnValue("$tun local-ip");
+		my $local_ip = $config_tun->returnValue("$tun source-address");
 
 		system ("sudo iptables -N VYOS_NHRP_${tun}_OUT_HOOK") == 0 or die "System call failed: $!";
 		system ("sudo iptables -A VYOS_NHRP_${tun}_OUT_HOOK -p gre -s ${local_ip} -d 224.0.0.0/4 -j DROP") == 0 or die "System call failed: $!";
