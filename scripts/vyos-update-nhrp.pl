@@ -454,9 +454,9 @@ sub ipsec_config {
 
 sub create_nhrp_iptables {
 	my $config_tun = new Vyatta::Config;
-	
+
 	$config_tun->setLevel("interfaces tunnel");
-	
+
 	if ( $config_tun->exists("$tun local-ip")) {
 		if ( $config_tun->exists("$tun remote-ip")) {
 			print ("$tun is not 'mGRE' tunnel'\n");
@@ -472,10 +472,10 @@ sub create_nhrp_iptables {
 }
 
 sub delete_nhrp_iptables {
-	system ("sudo iptables -D OUTPUT -j VYOS_NHRP_${tun}_OUT_HOOK") == 0 or die "System call failed: $!";
-	system ("sudo iptables -D VYOS_NHRP_${tun}_OUT_HOOK 1") == 0 or die "System call failed: $!";
-	system ("sudo iptables -D VYOS_NHRP_${tun}_OUT_HOOK 1") == 0 or die "System call failed: $!";
-	system ("sudo iptables -X VYOS_NHRP_${tun}_OUT_HOOK") == 0 or die "System call failed: $!";
+	system ("sudo iptables -D OUTPUT -j VYOS_NHRP_${tun}_OUT_HOOK >/dev/null 2>&1");
+	system ("sudo iptables -D VYOS_NHRP_${tun}_OUT_HOOK 1 >/dev/null 2>&1");
+	system ("sudo iptables -D VYOS_NHRP_${tun}_OUT_HOOK 1 >/dev/null 2>&1");
+	system ("sudo iptables -X VYOS_NHRP_${tun}_OUT_HOOK >/dev/null 2>&1");
 }
 
 #
