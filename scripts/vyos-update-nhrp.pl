@@ -221,7 +221,9 @@ sub tunnel_config {
 		my @starget = $tunnel_Config->listNodes("$tunnel_ID shortcut-target");
 		my $starget = $starget[0];
 		push(@conf_file, " shortcut-target", " $starget");
-		push(@conf_file, " ", $tunnel_Config->returnValue("$tunnel_ID shortcut-target $starget holding-time"));
+                if ( $tunnel_Config->exists("$tunnel_ID shortcut-target $starget holding-time")) {
+                    push(@conf_file, " holding-time ", $tunnel_Config->returnValue("$tunnel_ID shortcut-target $starget holding-time"));
+                }
 		shift(@conf_file);
 		unshift(@conf_file, "interface $tunnel_ID $type\n");
 		push(@conf_file, "\n");
